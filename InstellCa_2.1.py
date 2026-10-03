@@ -83,7 +83,7 @@ elif ecc>0.3:
     print(Fore.WHITE +"Highly eccentric orbit(e>0.3). Calculating annual mean \033[1;30;47m")
     print(Style.RESET_ALL)
 true1=np.linspace(0,270,number)
-print(Fore.WHITE +'Generating Plot, Please wait ~1 minute.. \033[1;30;47m')
+print(Fore.WHITE +'Generating Plot, Please wait ~30 seconds.. \033[1;30;47m')
 print(Style.RESET_ALL)
 average=[]
 inverse=[]        
