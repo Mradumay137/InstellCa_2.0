@@ -232,6 +232,8 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
                 #General integral function
                 def function(x,th,la): 
                     rho=al-rp*math.cos(la)*math.cos(lon)
+                    if la>np.pi/2:
+                        rho=al+rp*math.cos(la)*math.cos(lon)
                     a=(-rs*math.cos(th)*math.cos(x)+rho)*math.cos(la)*math.cos(lon)+(-rs*math.cos(th)*math.sin(x)-rp*math.cos(la)*math.sin(lon))*math.cos(la)*math.sin(lon) 
                     b=rs*math.sin(th)*math.sin(la)-rp*math.sin(la)**2
                     c=(rs*math.cos(th)*math.cos(x)-rho)**2+(rs*math.cos(th)*math.sin(x)+rp*math.cos(la)*math.sin(lon))**2+(rs*math.sin(th)-rp*math.sin(la))**2
