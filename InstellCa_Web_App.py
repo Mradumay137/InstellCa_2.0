@@ -65,7 +65,7 @@ bond_albedo = st.sidebar.slider(
     max_value=1.0,
     value=0.3,
     step=0.01,
-    help="Fraction of total power incident upon a planet that is reflected away into space."
+    help="Planetary bolometric reflection coefficient"
 )
 rotation_option = st.sidebar.radio(
     "Rotation Options:",
@@ -277,7 +277,7 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
         aver1 = ((P_lat_orbit_avg * 10**8 * (1 - A)) / 5.67) ** 0.25         
     P_global_avg = np.sum(P_lat_orbit_avg * np.cos(la1)) / np.sum(np.cos(la1))         
     T_b = ((P_global_avg * 10**8 * (1 - A)) / 5.67) ** 0.25
-    print(T_b)
+    st.write(f'The dayside-average effective temperature is T_b (K)')
     maxlatitude=symp*57.3
     plt.subplot(1,1,1)
     if parameter==0:
