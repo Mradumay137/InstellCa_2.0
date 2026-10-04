@@ -1,0 +1,8 @@
+Dependencies
+
+streamlit
+numpy
+pandas
+matplotlib
+scipy
+pyvo
