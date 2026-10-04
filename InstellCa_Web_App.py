@@ -56,12 +56,17 @@ semiax=df["semi_major_axis"]
 name=df["target_name"]
 eccentricity=df["eccentricity"]  
 st.sidebar.header("Model Settings")
-
 df["target_name"] = df["target_name"].astype(str).str.strip()
-
 planet_names = sorted(df["target_name"].dropna().unique())
 exoplanet = st.sidebar.selectbox("Select Target Exoplanet:", planet_names)
-
+bond_albedo = st.sidebar.slider(
+    "Bond Albedo (A):",
+    min_value=0.0,
+    max_value=1.0,
+    value=0.3,
+    step=0.01,
+    help="Fraction of total power incident upon a planet that is reflected away into space."
+)
 rotation_option = st.sidebar.radio(
     "Rotation Options:",
     ["Tidal Locking (0)", "Diurnal Rotation (1)"],
@@ -104,7 +109,6 @@ if np.isnan(fa1)==True:
         st.warning("Please enter a value above to continue.")
         st.stop()
     fa1=float(user_val)
-
 if not run_button:
     st.info(" Please select an exoplanet from the sidebar menu and click **Run InstellCa Model** to generate the thermal profile.")
 elif exoplanet == "-- Select an Exoplanet --":
@@ -269,7 +273,7 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
         inve=np.asarray(inverse)           
         P_lat_orbit_avg = np.mean(aver, axis=0)  
         inve1=np.mean(inve,axis=0)
-        A = 0.3
+        A = bond_albedo
         aver1 = ((P_lat_orbit_avg * 10**8 * (1 - A)) / 5.67) ** 0.25         
     P_global_avg = np.sum(P_lat_orbit_avg * np.cos(la1)) / np.sum(np.cos(la1))         
     T_b = ((P_global_avg * 10**8 * (1 - A)) / 5.67) ** 0.25
