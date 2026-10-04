@@ -275,12 +275,12 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
         inve1=np.mean(inve,axis=0)
         A = bond_albedo
         aver1 = ((P_lat_orbit_avg * 10**8 * (1 - A)) / 5.67) ** 0.25  
-        offset=100*abs(np.max(P_lat_orbit_avg)-np.max(inve1))/np.max(inve1)
+        offset=np.min(aver1)*abs(np.max(P_lat_orbit_avg)-np.max(inve1))/np.max(inve1)
     P_global_avg = np.sum(P_lat_orbit_avg * np.cos(la1)) / np.sum(np.cos(la1))         
     T_b = ((P_global_avg * 10**8 * (1 - A)) / 5.67) ** 0.25
     st.write(f'The dayside-average effective temperature is {T_b:.2f} K')
     if parameter==1:
-        st.write(f'The thermal baseline offset is {offset:.1f} %')
+        st.write(f'The thermal baseline offset is {offset:.1f} K')
     maxlatitude=symp*57.3
     plt.subplot(1,1,1)
     if parameter==0:
