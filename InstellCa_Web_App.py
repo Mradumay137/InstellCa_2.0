@@ -112,7 +112,7 @@ elif exoplanet == "-- Select an Exoplanet --":
 
 if exoplanet != "-- Select an Exoplanet --" and run_button:    
     if parameter==1:
-        st.write(f"### Calculating thermal profile for **{exoplanet}**, please wait for ~30 seconds...")
+        st.write(f"### Calculating thermal profile for **{exoplanet}**. The simulation may take up to 2 minutes to complete...")
     if parameter==0:
         st.write(f"### Calculating irradiance profile for **{exoplanet}**. The simulation may take up to 2 minutes to complete...")
     number = 1    
