@@ -159,14 +159,14 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
         term=(math.asin(abs(rs-rp)/al))             
         s=np.pi/2
         symp=math.acos((rs+rp)/al)
-        la1=np.linspace(-s,s,200)
-        la2=np.linspace(-s*57.3,s*57.3,200)
+        la1=np.linspace(-s,s,100)
+        la2=np.linspace(-s*57.3,s*57.3,100)
         if parameter==0:
-            la1=np.linspace(-s1,s1,200)
-            la2=np.linspace(-s1*57.3,s1*57.3,200)
-        lon1=np.linspace(-np.pi,np.pi,200)
+            la1=np.linspace(-s1,s1,100)
+            la2=np.linspace(-s1*57.3,s1*57.3,100)
+        lon1=np.linspace(-np.pi,np.pi,100)
         if parameter==0:
-            lon1=np.linspace(0,0,200)
+            lon1=np.linspace(0,0,100)
         oldfor=[]
         final=[]
         denom=[]
@@ -267,7 +267,7 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
         inve=np.asarray(inverse)           
         P_lat_orbit_avg = np.mean(aver, axis=0)  
         inve1=np.mean(inve,axis=0)
-        err=P_lat_orbit_avg[100]-inve1[100]
+        err=P_lat_orbit_avg[50]-inve1[50]
         A = 0.3
         aver1 = ((P_lat_orbit_avg * 10**8 * (1 - A)) / 5.67) ** 0.25         
     P_global_avg = np.sum(P_lat_orbit_avg * np.cos(la1)) / np.sum(np.cos(la1))         
