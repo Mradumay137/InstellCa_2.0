@@ -174,7 +174,7 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
         approx=[]            
         #Limb Darkening
         if para==1 and u==0.6: 
-            fa=fa1*(1.06) #Milne-Eddington
+            fa=fa1*(1.0573) #Milne-Eddington
         if para==1 and u==0:
             fa=fa1
         P=5.67*10**(-8)*fa**(4)*4*np.pi*rs**2
