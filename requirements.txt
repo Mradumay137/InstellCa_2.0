@@ -1,6 +1,7 @@
 Dependencies
 
 streamlit
+colorama
 numpy
 pandas
 matplotlib
