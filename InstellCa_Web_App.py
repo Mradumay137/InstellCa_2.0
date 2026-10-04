@@ -69,7 +69,7 @@ bond_albedo = st.sidebar.slider(
 )
 rotation_option = st.sidebar.radio(
     "Rotation Options:",
-    ["Tidal Locking (0)", "Asynchronous Rotation (1)"],
+    ["Tidal Locking", "Asynchronous Rotation"],
     index=1
 )
 parameter = 0 if "Tidal" in rotation_option else 1
