@@ -301,4 +301,5 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
         plt.ylabel("Effective Temperature (K)",fontsize=16)       
     plt.legend(fontsize=16)
     st.pyplot(fig)
+    st.write("The Terminator extends to ",round((np.pi/2+term)*57.3,3), "degrees from the equator")
     
