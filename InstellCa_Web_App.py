@@ -9,7 +9,7 @@ st.set_page_config(
 st.title("🌑 InstellCa : Exoplanet Instellation Calculator")
 st.markdown("""
 InstellCa represents a digital twin of climate states on a rocky exoplanet. 
-Specifically, it provides latitudinal irradiance and thermal profiles due to radiative heat transport from the host star. 
+Specifically, it calculates irradiance and thermal profiles due to radiative heat transport from the host star. 
 This is based on a generalised model for irradiance that holds even for extremely close-in planets where standard models and approximations fail (Sadh and Gavassino (ApJ, 2026), Sadh (2026),  arXiv:2608.09241).  
 """)
 
