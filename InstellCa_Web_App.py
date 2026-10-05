@@ -116,7 +116,7 @@ elif exoplanet == "-- Select an Exoplanet --":
 
 if exoplanet != "-- Select an Exoplanet --" and run_button:    
     if parameter==1:
-        st.write(f"### Calculating thermal profile for **{exoplanet}**. The simulation may take up to 2 minutes to complete...")
+        st.write(f"### Calculating thermal profile over one diurnal rotation for **{exoplanet}**. The simulation may take up to 2 minutes to complete...")
     if parameter==0:
         st.write(f"### Calculating irradiance profile for **{exoplanet}**. The simulation may take up to 2 minutes to complete...")
     number = 1    
@@ -276,7 +276,7 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
         A = bond_albedo
         aver1 = ((P_lat_orbit_avg * 10**8 * (1 - A)) / 5.67) ** 0.25 
         inve_prof = ((inve1 * 10**8 * (1 - A)) / 5.67) ** 0.25
-        offset=np.min(aver1)*abs(np.max(P_lat_orbit_avg)-np.max(inve1))/np.max(inve1)
+        offset=abs(np.max(aver1)-np.max(inve_prof))
     P_global_avg = np.sum(P_lat_orbit_avg * np.cos(la1)) / np.sum(np.cos(la1))         
     T_b = ((P_global_avg * 10**8 * (1 - A)) / 5.67) ** 0.25
     st.write(f'The dayside-average effective temperature is {T_b:.2f} K')
