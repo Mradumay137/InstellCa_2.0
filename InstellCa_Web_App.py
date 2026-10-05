@@ -283,7 +283,8 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
     if parameter==1:
         st.write(f'The thermal baseline offset is {offset:.1f} K')
     maxlatitude=symp*57.3
-    st.write("The Terminator extends to ",round((np.pi/2+term)*57.3,3), "degrees from the equator")
+    if parameter==0:
+        st.write("The Terminator extends to ",round((np.pi/2+term)*57.3,3), "degrees from the equator")
     plt.subplot(1,1,1)
     if parameter==0:
         plt.plot(la2,P_lat_orbit_avg,'b-',label="Geometric Model")
