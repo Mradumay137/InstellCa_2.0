@@ -281,7 +281,7 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
     T_b = ((P_global_avg * 10**8 * (1 - A)) / 5.67) ** 0.25
     st.write(f'The dayside-average effective temperature is {T_b:.2f} K')
     if parameter==1:
-        st.write(f'The thermal baseline offset is {offset:.1f} K')
+        st.write(f'The thermal penumbral offset is {offset:.1f} K')
     maxlatitude=symp*57.3
     if parameter==0:
         st.write("The Terminator extends to ",round((np.pi/2+term)*57.3,3), "degrees from the equator")
