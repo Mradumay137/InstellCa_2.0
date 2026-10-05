@@ -289,9 +289,11 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
     if parameter==0:
         plt.plot(la2,P_lat_orbit_avg,'b-',label="Geometric Model")
         plt.plot(la2,inve1,'r--', label="Inverse-square law")
+        plt.xlabel("Sub-stellar angle",fontsize=16)
     if parameter==1:    
         plt.plot(la2,aver1,'b-',label="3D geometric profile")
         plt.plot(la2,inve_prof,'r--', label="2D point-source profile")
+        plt.xlabel("Latitude",fontsize=16)
     plt.axvline(x=maxlatitude,color='gray',linestyle='--',label='Critical point of symmetry')
     plt.axvline(x=-maxlatitude,color='gray',linestyle='--')
     plt.title("{0}".format(exoplanet),fontsize=16)
