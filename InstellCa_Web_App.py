@@ -297,11 +297,9 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
     plt.axvline(x=maxlatitude,color='gray',linestyle='--',label='Critical point of symmetry')
     plt.axvline(x=-maxlatitude,color='gray',linestyle='--')
     plt.title("{0}".format(exoplanet),fontsize=16)
-    plt.xlabel("Sub-stellar angle",fontsize=16)
     if parameter==0:
         plt.ylabel("Irradiance ($W/m^2$)",fontsize=16)
     if parameter==1:
-        #plt.ylabel("Diurnal Instellation ($W/m^2$)",fontsize=16)
         plt.ylabel("Effective Temperature (K)",fontsize=16)       
     plt.legend(fontsize=16)
     st.pyplot(fig)
