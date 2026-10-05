@@ -274,7 +274,8 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
         P_lat_orbit_avg = np.mean(aver, axis=0)  
         inve1=np.mean(inve,axis=0)
         A = bond_albedo
-        aver1 = ((P_lat_orbit_avg * 10**8 * (1 - A)) / 5.67) ** 0.25  
+        aver1 = ((P_lat_orbit_avg * 10**8 * (1 - A)) / 5.67) ** 0.25 
+        inve_prof = ((inve1 * 10**8 * (1 - A)) / 5.67) ** 0.25
         offset=np.min(aver1)*abs(np.max(P_lat_orbit_avg)-np.max(inve1))/np.max(inve1)
     P_global_avg = np.sum(P_lat_orbit_avg * np.cos(la1)) / np.sum(np.cos(la1))         
     T_b = ((P_global_avg * 10**8 * (1 - A)) / 5.67) ** 0.25
@@ -288,8 +289,7 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
         plt.plot(la2,inve1,'r--', label="Inverse-square law")
     if parameter==1:    
         plt.plot(la2,aver1,'b-',label="Geometric Model")
-        #plt.plot(la2,P_lat_orbit_avg,'b-',label="Geometric Model")
-        #plt.plot(la2,inve1,'r--', label="Inverse-square law")
+        plt.plot(la2,inve_prof,'r--', label="Inverse-square law")
     plt.axvline(x=maxlatitude,color='gray',linestyle='--',label='Critical point of symmetry')
     plt.axvline(x=-maxlatitude,color='gray',linestyle='--')
     plt.title("{0}".format(exoplanet),fontsize=16)
