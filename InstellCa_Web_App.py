@@ -50,26 +50,25 @@ query = """
 SELECT star_radius, radius, star_teff, semi_major_axis, target_name, eccentricity
 FROM exoplanet.epn_core
 """
-try:
-    # 1. Attempt the search
-    results = service.search(query)
-    
-    # 2. Only convert if results successfully returned data
-    df = results.to_table().to_pandas()
-    
-    # Display your dataframe or success message
-    st.dataframe(df)
+@st.cache_data(ttl=6*3600, show_spinner="Querying the exoplanet database...")
+def load_exoplanets():
+    service = pyvo.dal.TAPService("http://voparis-tap-planeto.obspm.fr/tap")
+    query = """
+    SELECT star_radius, radius, star_teff, semi_major_axis, target_name, eccentricity
+    FROM exoplanet.epn_core
+    """
+    return service.search(query).to_table().to_pandas()
 
-except (DALFormatError, ConnectTimeout, Timeout) as e:
-    st.error("The astronomical database service took too long to respond or is currently unavailable.")
-    df = pd.DataFrame()  # Fallback empty dataframe to prevent cascading errors
-except NameError as e:
-    st.error(f"Service configuration error: {e}")
-    df = pd.DataFrame()
-except Exception as e:
-    st.error(f"An unexpected error occurred: {e}")
-    df = pd.DataFrame()
-#df = results.to_table().to_pandas()
+try:
+    df = load_exoplanets()
+except Exception as e:  # DALFormatError, Timeout, ConnectionError, etc.
+    st.error("The astronomical database service took too long to respond or is currently unavailable. Please try again in a few minutes.")
+    st.stop()          # <-- this is the missing piece
+
+required = ["star_radius", "radius", "star_teff", "semi_major_axis", "target_name", "eccentricity"]
+if df.empty or any(c not in df.columns for c in required):
+    st.error("The database returned no usable data. Please try again later.")
+    st.stop()
 starrad=df["star_radius"]
 planrad=df["radius"]
 temp=df["star_teff"]
