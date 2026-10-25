@@ -51,12 +51,25 @@ SELECT star_radius, radius, star_teff, semi_major_axis, target_name, eccentricit
 FROM exoplanet.epn_core
 """
 try:
+    # 1. Attempt the search
     results = service.search(query)
+    
+    # 2. Only convert if results successfully returned data
+    df = results.to_table().to_pandas()
+    
+    # Display your dataframe or success message
+    st.dataframe(df)
+
 except (DALFormatError, ConnectTimeout, Timeout) as e:
-    st.error("The astronomical database service took too long to respond or is currently unavailable. Please try again later or refine your query.")
-    # Optional: log the detailed error for debugging
-    print(f"TAP Timeout/Error: {e}")
-df = results.to_table().to_pandas()
+    st.error("The astronomical database service took too long to respond or is currently unavailable.")
+    df = pd.DataFrame()  # Fallback empty dataframe to prevent cascading errors
+except NameError as e:
+    st.error(f"Service configuration error: {e}")
+    df = pd.DataFrame()
+except Exception as e:
+    st.error(f"An unexpected error occurred: {e}")
+    df = pd.DataFrame()
+#df = results.to_table().to_pandas()
 starrad=df["star_radius"]
 planrad=df["radius"]
 temp=df["star_teff"]
