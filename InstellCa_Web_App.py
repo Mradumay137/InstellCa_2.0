@@ -50,6 +50,7 @@ query = """
 SELECT star_radius, radius, star_teff, semi_major_axis, target_name, eccentricity
 FROM exoplanet.epn_core
 """
+results = service.run_sync(query, timeout=120)
 @st.cache_data(ttl=6*3600, show_spinner="Querying the exoplanet database...")
 def load_exoplanets():
     service = pyvo.dal.TAPService("http://voparis-tap-planeto.obspm.fr/tap")
@@ -69,6 +70,7 @@ required = ["star_radius", "radius", "star_teff", "semi_major_axis", "target_nam
 if df.empty or any(c not in df.columns for c in required):
     st.error("The database returned no usable data. Please try again later.")
     st.stop()
+
 starrad=df["star_radius"]
 planrad=df["radius"]
 temp=df["star_teff"]
