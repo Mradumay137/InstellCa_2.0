@@ -41,13 +41,6 @@ import pandas as pd
 from pyvo.dal.exceptions import DALFormatError
 from requests.exceptions import Timeout, ConnectTimeout
 
-try:
-    results = service.search(query)
-except (DALFormatError, ConnectTimeout, Timeout) as e:
-    st.error("The astronomical database service took too long to respond or is currently unavailable. Please try again later or refine your query.")
-    # Optional: log the detailed error for debugging
-    print(f"TAP Timeout/Error: {e}")
-
 fig=plt.figure(figsize=(9,6),constrained_layout=False)
 
 service = pyvo.dal.TAPService(
@@ -57,7 +50,12 @@ query = """
 SELECT star_radius, radius, star_teff, semi_major_axis, target_name, eccentricity
 FROM exoplanet.epn_core
 """
-results = service.search(query)
+try:
+    results = service.search(query)
+except (DALFormatError, ConnectTimeout, Timeout) as e:
+    st.error("The astronomical database service took too long to respond or is currently unavailable. Please try again later or refine your query.")
+    # Optional: log the detailed error for debugging
+    print(f"TAP Timeout/Error: {e}")
 df = results.to_table().to_pandas()
 starrad=df["star_radius"]
 planrad=df["radius"]
