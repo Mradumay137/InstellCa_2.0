@@ -43,40 +43,86 @@ from requests.exceptions import Timeout, ConnectTimeout
 
 fig=plt.figure(figsize=(9,6),constrained_layout=False)
 
-service = pyvo.dal.TAPService(
-    "http://voparis-tap-planeto.obspm.fr/tap"
-)
-query = """
-SELECT star_radius, radius, star_teff, semi_major_axis, target_name, eccentricity
-FROM exoplanet.epn_core
-"""
-results = service.run_sync(query, timeout=120)
-@st.cache_data(ttl=6*3600, show_spinner="Querying the exoplanet database...")
-def load_exoplanets():
+from pathlib import Path
+
+SNAPSHOT = Path(__file__).parent / "exoplanets_snapshot.csv"
+COLUMNS = ["star_radius", "radius", "star_teff", "semi_major_axis", "target_name", "eccentricity"]
+
+def _fetch_nasa():
+    service = pyvo.dal.TAPService("https://exoplanetarchive.ipac.caltech.edu/TAP")
+    query = """
+    SELECT pl_name, pl_radj, st_rad, st_teff, pl_orbsmax, pl_orbeccen
+    FROM pscomppars
+    """
+    df = service.run_sync(query, timeout=30).to_table().to_pandas()
+    return df.rename(columns={
+        "pl_name": "target_name",
+        "pl_radj": "radius",
+        "st_rad": "star_radius",
+        "st_teff": "star_teff",
+        "pl_orbsmax": "semi_major_axis",
+        "pl_orbeccen": "eccentricity",
+    })
+
+
+def _fetch_paris():
     service = pyvo.dal.TAPService("http://voparis-tap-planeto.obspm.fr/tap")
     query = """
     SELECT star_radius, radius, star_teff, semi_major_axis, target_name, eccentricity
     FROM exoplanet.epn_core
     """
-    return service.search(query).to_table().to_pandas()
+    return service.run_sync(query, timeout=30).to_table().to_pandas()
+
+
+def _read_snapshot():
+    return pd.read_csv(SNAPSHOT)
+
+SOURCES = [
+    ("NASA Exoplanet Archive", _fetch_nasa),
+    ("Paris Observatory (EPN-TAP)", _fetch_paris),
+    ("saved local copy", _read_snapshot),
+]
+
+@st.cache_data(ttl=6 * 3600, show_spinner="Querying exoplanet databases...")
+def load_exoplanets():
+    errors = []
+    for label, fetch in SOURCES:
+        try:
+            df = fetch()
+            if df.empty or any(c not in df.columns for c in COLUMNS):
+                raise ValueError("returned no usable data")
+            df = df[COLUMNS]
+            if label != "saved local copy":
+                try:
+                    df.to_csv(SNAPSHOT, index=False)  # refresh snapshot on success
+                except OSError:
+                    pass
+            return df, label, errors
+        except Exception as e:
+            errors.append(f"{label}: {type(e).__name__}")
+    raise RuntimeError("; ".join(errors))
+
 
 try:
-    df = load_exoplanets()
-except Exception as e:  # DALFormatError, Timeout, ConnectionError, etc.
-    st.error("The astronomical database service took too long to respond or is currently unavailable. Please try again in a few minutes.")
-    st.stop()          # <-- this is the missing piece
-
-required = ["star_radius", "radius", "star_teff", "semi_major_axis", "target_name", "eccentricity"]
-if df.empty or any(c not in df.columns for c in required):
-    st.error("The database returned no usable data. Please try again later.")
+    df, source_label, failed = load_exoplanets()
+except Exception:
+    st.error("All exoplanet data sources are currently unavailable. Please try again in a few minutes.")
     st.stop()
 
-starrad=df["star_radius"]
-planrad=df["radius"]
-temp=df["star_teff"]
-semiax=df["semi_major_axis"]
-name=df["target_name"]
-eccentricity=df["eccentricity"]  
+if failed:
+    st.warning(f"Could not reach: {', '.join(failed)}. Using data from the {source_label}.")
+if source_label == "saved local copy":
+    st.warning("Using a saved copy of the catalogue, which may be out of date.")
+else:
+    st.caption(f"Data source: {source_label}")
+
+starrad = df["star_radius"]
+planrad = df["radius"]
+temp = df["star_teff"]
+semiax = df["semi_major_axis"]
+name = df["target_name"]
+eccentricity = df["eccentricity"]
+
 st.sidebar.header("Model Settings")
 df["target_name"] = df["target_name"].astype(str).str.strip()
 planet_names = sorted(df["target_name"].dropna().unique())
