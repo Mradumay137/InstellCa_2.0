@@ -344,11 +344,13 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
         A = bond_albedo
         aver1 = ((P_lat_orbit_avg * 10**8 * (1 - A)) / 5.67) ** 0.25 
         inve_prof = ((inve1 * 10**8 * (1 - A)) / 5.67) ** 0.25
+        difference=integrate.simpson(aver1)-integrate.simpson(inve_prof)
         offset=abs(np.max(aver1)-np.max(inve_prof))
     P_global_avg = np.sum(P_lat_orbit_avg * np.cos(la1)) / np.sum(np.cos(la1))         
     T_b = ((P_global_avg * 10**8 * (1 - A)) / 5.67) ** 0.25   
     if parameter==1:
         st.write(f'The planetary effective temperature is {T_b:.2f} K')
+        st.write(f'The energy difference is {difference:.2f} K')
         st.write(f'The penumbral thermal offset is {offset:.1f} K')
     maxlatitude=symp*57.3
     if parameter==0:
