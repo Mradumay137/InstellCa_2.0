@@ -346,8 +346,10 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
         inve_prof = ((inve1 * 10**8 * (1 - A)) / 5.67) ** 0.25
         difference=np.sum(aver1)-np.sum(inve_prof)
         offset=abs(np.max(aver1)-np.max(inve_prof))
-    P_global_avg = np.sum(P_lat_orbit_avg * np.cos(la1)) / np.sum(np.cos(la1))         
-    T_b = ((P_global_avg * 10**8 * (1 - A)) / 5.67) ** 0.25   
+    P_global_avg = np.sum(P_lat_orbit_avg * np.cos(la1)) / np.sum(np.cos(la1)) 
+    P_global_avg_st = np.sum(inve1 * np.cos(la1)) / np.sum(np.cos(la1)) 
+    T_b = ((P_global_avg * 10**8 * (1 - A)) / 5.67) ** 0.25 
+    T_b_st = ((P_global_avg_st * 10**8 * (1 - A)) / 5.67) ** 0.25 
     if parameter==1:
         st.write(f'The planetary effective temperature is {T_b:.2f} K')
         st.write(f'The energy difference is {difference:.2f} K')
