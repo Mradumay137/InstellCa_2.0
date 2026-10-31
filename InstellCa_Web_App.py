@@ -352,8 +352,6 @@ if exoplanet != "-- Select an Exoplanet --" and run_button:
     T_b_st = ((P_global_avg_st * 10**8 * (1 - A)) / 5.67) ** 0.25 
     if parameter==1:
         st.write(f'The planetary effective temperature is {T_b:.2f} K')
-        st.write(f'The standard planetary effective temperature is {T_b_st:.2f} K')
-        st.write(f'The energy difference is {difference:.2f} K')
         st.write(f'The penumbral thermal offset is {offset:.1f} K')
     maxlatitude=symp*57.3
     if parameter==0:
